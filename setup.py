@@ -5,6 +5,8 @@ import versioneer
 
 setup(
         name = 'archive',
+        packages = find_packages('src'),
+        package_dir = {'': 'src'},
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
         )
