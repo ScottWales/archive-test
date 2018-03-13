@@ -22,10 +22,14 @@ import pytest
 
 @pytest.fixture(scope='session')
 def database():
-    db.connect('sqlite:///:memory:', debug=True, init=True)
+    conn = db.connect('sqlite:///:memory:', debug=True, init=True)
+    yield conn
+    conn.close()
 
 @pytest.fixture
 def session(database):
-    session = db.Session()
+    trans = database.begin()
+    session = db.Session(bind=database)
     yield session
-    session.rollback()
+    session.close()
+    trans.rollback()

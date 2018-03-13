@@ -38,8 +38,8 @@ def mock_file():
     """
     with mock.patch('archive.cli.File.from_filename') as mock_file:
         def from_filename(filename, dataset):
-            return archive.model.File(dataset=dataset, size=500000,
-                    sha256='abcdef123456')
+            return archive.model.File(dataset=dataset, name=filename, 
+                    size=500000, sha256='abcdef123456')
         mock_file.side_effect = from_filename
         yield mock_file
 
@@ -89,3 +89,7 @@ def test_get_wrong_dataset(dataset, session):
     with pytest.raises(LookupError):
         get(['sample_file'], dataset='wrong_dataset', session=session)
 
+def test_list(dataset, session, capsys):
+    list_files(session=session)
+    out, err = capsys.readouterr()
+    assert 'sample_file' in out

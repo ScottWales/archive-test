@@ -23,6 +23,9 @@ from sqlalchemy.orm import sessionmaker
 Session = sessionmaker()
 
 def connect(url, debug=False, init=False):
+    """
+    Returns a sqlalchemy.Connection
+    """
     engine = create_engine(url, echo=debug)
 
     if init:
@@ -30,3 +33,5 @@ def connect(url, debug=False, init=False):
         Base.metadata.create_all(engine)
 
     Session.configure(bind=engine)
+
+    return engine.connect()

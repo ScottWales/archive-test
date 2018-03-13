@@ -42,6 +42,7 @@ class File(Base):
     dataset_id = Column(Integer, ForeignKey('dataset.id'))
     sha256 = Column(String)
     size = Column(Integer)
+    name = Column(String)
 
     dataset = relationship('Dataset', back_populates='files')
 
@@ -50,10 +51,13 @@ class File(Base):
         f = File()
         f.size = os.path.getsize(filename)
         f.dataset = dataset
+        f.name = filename
 
         checksum = hashlib.sha256()
-        with open(filename, 'rb') as f:
-            for chunk in iter(lambda: f.read(4096), b""):
+        with open(filename, 'rb') as r:
+            for chunk in iter(lambda: r.read(4096), b""):
                 checksum.update(chunk)
+
         f.sha256 = checksum.hexdigest()
         return f
+

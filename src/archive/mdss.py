@@ -19,19 +19,20 @@ limitations under the License.
 from __future__ import print_function
 import subprocess
 
+def mdss(cmd, args, project):
+    subprocess.check_call(
+            ['echo', 'mdss', '-P', project, cmd] + args
+            )
+
 # MDSS commands
 def put(localfiles, dest, project, wait=True):
     """
     Store files on tape
     """
-    subprocess.check_call(
-            ['mdss', 'put', '-P', project] + localfiles + [dest]
-            )
+    mdss('put', localfiles + [dest], project=project)
 
 def get(remotefiles, dest, project):
     """
     Store files on tape
     """
-    subprocess.check_call(
-            ['mdss', 'get', '-P', project] + localfiles + [dest]
-            )
+    mdss('get', remotefiles + [dest], project=project)

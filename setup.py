@@ -9,4 +9,12 @@ setup(
         package_dir = {'': 'src'},
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
+        install_requires = [
+            'click',
+            'sqlalchemy',
+            ],
+        entry_points = {
+            'console_scripts': [
+                'archive-test = archive.cli:cli',
+                ]}
         )
